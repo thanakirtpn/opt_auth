@@ -1,0 +1,40 @@
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: mern-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://admin:admin123@mongo:27017/mern-auth?authSource=admin
+      - GMAIL_USER=${GMAIL_USER}
+      - GMAIL_PASS=${GMAIL_PASS}
+      - CLIENT_URL=http://localhost:5173
+    depends_on:
+      - mongo
+    env_file:
+      - .env.production 
+
+  frontend:
+    image: mern-frontend:latest  # ✅ ใช้ image ที่ build ไว้แล้ว
+    container_name: mern-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:

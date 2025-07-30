@@ -1,0 +1,33 @@
+
+services:
+  backend:
+    build: ./backend
+    container_name: mern-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mern-auth
+      - GMAIL_USER=your@gmail.com
+      - GMAIL_PASS=your-app-password
+      - CLIENT_URL=http://localhost:5173
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    container_name: mern-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:5000
+
+  mongo:
+    image: mongo
+    container_name: mern-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
