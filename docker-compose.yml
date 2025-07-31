@@ -4,7 +4,7 @@ services:
     container_name: mongodb
     restart: always
     ports:
-      - "27017:27017"
+      - "13006:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin123
@@ -18,7 +18,7 @@ services:
     container_name: mern-backend
     restart: always
     ports:
-      - "5000:5000"
+      - "13005:5000"
     environment:
       - MONGO_URI=mongodb://admin:admin123@mongo:27017/mern-auth?authSource=admin
       - GMAIL_USER=${GMAIL_USER}
@@ -34,7 +34,7 @@ services:
     container_name: mern-frontend
     restart: always
     ports:
-      - "5173:5173"
+      - "13004:5173"
     depends_on:
       - backend
 
