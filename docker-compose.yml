@@ -31,8 +31,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
   
     image: mern-frontend:latest  
     container_name: mern-frontend
@@ -41,6 +41,8 @@ services:
       - "13004:5173"
     depends_on:
       - backend
+    env_file:
+      - .env.production 
 
 volumes:
   mongo-data:
