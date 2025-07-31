@@ -1,8 +1,8 @@
-
 services:
   mongo:
     image: mongo
     container_name: mongodb
+    restart: always
     ports:
       - "27017:27017"
     environment:
@@ -16,6 +16,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     container_name: mern-backend
+    restart: always
     ports:
       - "5000:5000"
     environment:
@@ -29,8 +30,9 @@ services:
       - .env.production 
 
   frontend:
-    image: mern-frontend:latest  # ✅ ใช้ image ที่ build ไว้แล้ว
+    image: mern-frontend:latest  
     container_name: mern-frontend
+    restart: always
     ports:
       - "5173:5173"
     depends_on:
