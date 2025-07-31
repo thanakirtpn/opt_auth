@@ -1,3 +1,54 @@
+# services:
+#   mongo:
+#     image: mongo
+#     container_name: mongodb
+#     restart: always
+#     ports:
+#       - "13006:27017"
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: admin
+#       MONGO_INITDB_ROOT_PASSWORD: admin123
+#     volumes:
+#       - mongo-data:/data/db
+
+#   backend:
+#     build:
+#       context: .
+#       dockerfile: backend/Dockerfile
+#     container_name: mern-backend
+#     restart: always
+#     ports:
+#       - "13005:5000"
+#     environment:
+#       - MONGO_URI=mongodb://admin:admin123@mongo:27017/mern-auth?authSource=admin
+#       - GMAIL_USER=${GMAIL_USER}
+#       - GMAIL_PASS=${GMAIL_PASS}
+#       - CLIENT_URL=http://localhost:5173
+#     depends_on:
+#       - mongo
+#     env_file:
+#       - .env.production 
+
+#   frontend:
+#     build:
+#       context: .
+#       dockerfile: frontend/Dockerfile
+  
+#     image: mern-frontend:latest  
+#     container_name: mern-frontend
+#     restart: always
+#     ports:
+#       - "13004:5173"
+#     depends_on:
+#       - backend
+#     env_file:
+#       - .env.production 
+
+# volumes:
+#   mongo-data:
+
+
+
 services:
   mongo:
     image: mongo
@@ -23,7 +74,7 @@ services:
       - MONGO_URI=mongodb://admin:admin123@mongo:27017/mern-auth?authSource=admin
       - GMAIL_USER=${GMAIL_USER}
       - GMAIL_PASS=${GMAIL_PASS}
-      - CLIENT_URL=http://localhost:5173
+      - CLIENT_URL=http://localhost:13004
     depends_on:
       - mongo
     env_file:
@@ -33,16 +84,13 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
-  
     image: mern-frontend:latest  
     container_name: mern-frontend
     restart: always
     ports:
-      - "13004:5173"
+      - "13004:80" # nginx default
     depends_on:
       - backend
-    env_file:
-      - .env.production 
 
 volumes:
   mongo-data:
