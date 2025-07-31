@@ -88,7 +88,7 @@ services:
     container_name: mern-frontend
     restart: always
     ports:
-      - "13004:80" # nginx default
+      - "13004:5173"
     depends_on:
       - backend
 
