@@ -1,19 +1,18 @@
 # Stage 1: Build
 FROM node:22-alpine AS builder
 
-WORKDIR /frontend
-
-COPY frontend/package*.json ./
+WORKDIR /app
+COPY package*.json ./
 RUN npm ci
-COPY frontend ./
+COPY . .
 COPY .env.production .env
 RUN npm run build
 
-# Stage 2: Serve
-FROM node:22-alpine AS runner
+# Stage 2: Serve with nginx (small and fast)
+FROM nginx:alpine AS runner
 
-WORKDIR /frontend
-RUN npm install -g http-server
-COPY --from=builder /frontend/dist .
-EXPOSE 5173
-CMD ["http-server", ".", "-p", "5173"]
+WORKDIR /app
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
