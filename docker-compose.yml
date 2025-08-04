@@ -1,9 +1,13 @@
+
 version: '3.8'
+
+
 
 services:
   mongo:
     image: mongo
     container_name: mongodb
+    restart: always
     ports:
       - "13007:27017"
     environment:
@@ -17,6 +21,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     container_name: mern-backend
+    restart: always
     ports:
       - "13006:5000"
     env_file:
@@ -33,6 +38,7 @@ services:
       dockerfile: Dockerfile
     image: mern-frontend:latest
     container_name: mern-frontend
+    restart: always
     ports:
       - "13005:80"
     depends_on:

@@ -6,6 +6,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 COPY .env.production .env
+
 RUN npm run build
 
 # Stage 2: Serve with nginx (small and fast)
